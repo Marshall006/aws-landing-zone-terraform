@@ -1,0 +1,38 @@
+# =============================================================================
+# Checkov : analyse de sécurité du code Terraform.
+#
+# Les contrôles ci-dessous sont VOLONTAIREMENT écartés. Chaque exclusion est
+# une décision d'architecture documentée (acceptation de risque), pas un oubli.
+# Contexte : compte unique d'apprentissage / PME, budget de quelques dollars.
+# À réévaluer pour un environnement de production multi-comptes.
+# =============================================================================
+framework: terraform
+compact: true
+skip-check:
+  # Réplication inter-régions des buckets : double le coût de stockage ; les
+  # journaux et l'état sont déjà versionnés et protégés contre la suppression.
+  - CKV_AWS_144
+  # Journalisation des accès S3 : nécessiterait un bucket de logs dédié (lui-même
+  # à journaliser). CloudTrail trace déjà les accès aux données sensibles.
+  - CKV_AWS_18
+  # Notifications d'événements S3 : aucun traitement aval prévu.
+  - CKV2_AWS_62
+  # État Terraform chiffré en SSE-S3 (AES-256) plutôt que KMS : même niveau de
+  # protection au repos, sans coût KMS ni dépendance à une clé à gérer.
+  - CKV_AWS_145
+  # CloudTrail -> CloudWatch Logs et SNS : coût d'ingestion continu ; les
+  # journaux restent interrogeables dans S3 (Athena) et l'intégrité est vérifiée.
+  - CKV2_AWS_10
+  - CKV_AWS_252
+  # GuardDuty au niveau d'une Organisation : compte unique (rejoindre AWS
+  # Organizations convertit le Free plan en plan payant). GuardDuty reste
+  # activable par variable (enable_guardduty).
+  - CKV2_AWS_3
+  # Journaux de flux VPC : rétention courte (7 à 30 jours) et chiffrement par
+  # défaut d'AWS, suffisants pour le diagnostic réseau ; 1 an + KMS multiplierait
+  # le coût de stockage CloudWatch.
+  - CKV_AWS_338
+  - CKV_AWS_158
+  # Zones de disponibilité : le module ne retient que les N premières zones
+  # (slice) ; l'ajout d'une zone par AWS ne modifie donc pas le réseau.
+  - CKV_AWS_394

@@ -1,0 +1,11 @@
+# État et caches Terraform : jamais dans Git (l'état peut contenir des secrets)
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+# Valeurs propres à chaque compte
+*.tfvars
+!*.tfvars.example
+envs/backend.hcl
+.terraform.lock.hcl.bak
