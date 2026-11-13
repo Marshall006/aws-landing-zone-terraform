@@ -8,6 +8,18 @@ mock_provider "aws" {
   mock_data "aws_partition" {
     defaults = { partition = "aws" }
   }
+  # ARN réalistes : le fournisseur AWS valide le format des ARN
+  mock_resource "aws_kms_key" {
+    defaults = {
+      arn    = "arn:aws:kms:eu-west-3:123456789012:key/11111111-2222-3333-4444-555555555555"
+      key_id = "11111111-2222-3333-4444-555555555555"
+    }
+  }
+  mock_resource "aws_s3_bucket" {
+    defaults = {
+      arn = "arn:aws:s3:::acme-audit-logs-123456789012-eu-west-3"
+    }
+  }
 }
 
 variables {

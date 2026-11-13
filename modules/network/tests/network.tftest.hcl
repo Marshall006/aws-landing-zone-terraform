@@ -14,6 +14,18 @@ mock_provider "aws" {
       region = "eu-west-3"
     }
   }
+  # Sans ces valeurs, le simulateur générerait des chaînes aléatoires que le
+  # fournisseur AWS refuse là où un ARN est attendu.
+  mock_resource "aws_cloudwatch_log_group" {
+    defaults = {
+      arn = "arn:aws:logs:eu-west-3:123456789012:log-group:/vpc/test/flow-logs"
+    }
+  }
+  mock_resource "aws_iam_role" {
+    defaults = {
+      arn = "arn:aws:iam::123456789012:role/test-vpc-flow-logs"
+    }
+  }
 }
 
 variables {

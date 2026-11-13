@@ -1,4 +1,11 @@
-mock_provider "aws" {}
+mock_provider "aws" {
+  # ARN réaliste : le fournisseur AWS valide le format des ARN
+  mock_resource "aws_ce_anomaly_monitor" {
+    defaults = {
+      arn = "arn:aws:ce::123456789012:anomalymonitor/11111111-2222-3333-4444-555555555555"
+    }
+  }
+}
 
 variables {
   name               = "acme"
