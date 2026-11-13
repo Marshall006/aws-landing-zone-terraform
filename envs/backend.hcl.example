@@ -1,0 +1,4 @@
+# Copier en envs/backend.hcl (non versionné) avec la sortie de bootstrap :
+#   cd bootstrap && terraform output -raw backend_config > ../envs/backend.hcl
+bucket = "tfstate-123456789012-eu-west-3"
+region = "eu-west-3"
